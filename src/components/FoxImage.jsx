@@ -5,6 +5,7 @@ const API_URL = "https://randomfox.ca/floof/"
 
 function FoxImage() {
   const [image, setImage] = useState(foxLogo)
+  const [loading, setLoading] = useState(true)
   
   useEffect(() => {
     const controller = new AbortController()
@@ -20,10 +21,11 @@ function FoxImage() {
         const data = await response.json()
         console.log(data);
         setImage(data.image)
+        setLoading(false)
       
       } catch(error) {
         
-        if ( error.name === "AbortError") return
+        if (error.name === "AbortError") return
         console.log(error);
       
       }
@@ -37,7 +39,10 @@ function FoxImage() {
   return (
     <div>
       <p>Learn more about us!</p>
-      <img src={image} alt="fox logo" />
+      {!loading 
+        ? <img src={image} alt="fox logo"/>  
+        : <p>Loading...</p>
+      }
     </div>
   );
 }
